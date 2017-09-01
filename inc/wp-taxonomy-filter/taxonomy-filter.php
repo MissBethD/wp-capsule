@@ -63,38 +63,14 @@ function cftf_wp_title($title, $sep, $seplocation) {
 add_filter('wp_title', 'cftf_wp_title', 10, 3);
 
 function cftf_enqueue_scripts() {
-	// Figure out the URL for this file.
-	$parent_dir = trailingslashit(get_template_directory());
-	$child_dir = trailingslashit(get_stylesheet_directory());
+	$url = trailingslashit( get_template_directory_uri() );
 
-	$plugin_dir = trailingslashit(basename(dirname(__FILE__)));
-	$file = basename(__FILE__);
+	wp_enqueue_script( 'jquery-ui-datepicker' );
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'chosen', $url . 'inc/chosen/chosen/chosen.jquery.min.js', array( 'jquery' ), null, true );
+	wp_enqueue_script( 'cftf', $url . 'inc/wp-taxonomy-filter/taxonomy-filter.js', array( 'jquery', 'chosen', 'jquery-ui-datepicker' ), '1.0', true );
 
-	if (file_exists($parent_dir.'functions/'.$plugin_dir.$file)) {
-		$url = trailingslashit(get_template_directory_uri()).'functions/'.$plugin_dir;
-	}
-	else if (file_exists($parent_dir.'plugins/'.$plugin_dir.$file)) {
-		$url = trailingslashit(get_template_directory_uri()).'plugins/'.$plugin_dir;
-	}
-	else if ($child_dir !== $parent_dir && file_exists($child_dir.'functions/'.$plugin_dir.$file)) {
-		$url = trailingslashit(get_stylesheet_directory_uri()).'functions/'.$plugin_dir;
-	}
-	else if ($child_dir !== $parent_dir && file_exists($child_dir.'plugins/'.$plugin_dir.$file)) {
-		$url = trailingslashit(get_stylesheet_directory_uri()).'plugins/'.$plugin_dir;
-	}
-	else {
-		$url = plugin_dir_url(__FILE__);
-	}
-
-	// In case the end user has not used one of the usual suspects
-	$url = trailingslashit(apply_filters('cftf_url', $url));
-
-	wp_enqueue_script('jquery-ui-datepicker');
-	wp_enqueue_script('jquery');
-	wp_enqueue_script('chosen', $url.'lib/chosen/chosen/chosen.jquery.min.js', array('jquery'), null, true);
-	wp_enqueue_script('cftf', $url.'/taxonomy-filter.js', array('jquery', 'chosen', 'jquery-ui-datepicker'), '1.0', true);
-
-	wp_enqueue_style('chosen', $url.'/lib/chosen/chosen/chosen.css', array(), null, 'all');
+	wp_enqueue_style( 'chosen', $url . 'inc/chosen/chosen/chosen.css', array(), null, 'all' );
 }
 add_action('wp_enqueue_scripts', 'cftf_enqueue_scripts');
 

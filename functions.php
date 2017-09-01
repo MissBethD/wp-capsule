@@ -1,4 +1,11 @@
 <?php
+/**
+ * Load wp-taxonomy-filter.
+ * It was split into wp-taxonomy-filter and chosen.
+ *
+ * @see https://github.com/crowdfavorite/wp-taxonomy-filter
+ */
+require get_template_directory() . '/inc/wp-taxonomy-filter/taxonomy-filter.php';
 
 include('ui/functions.php');
 
