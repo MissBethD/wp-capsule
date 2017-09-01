@@ -40,7 +40,7 @@ if ( ! defined( 'XMLRPC_REQUEST' ) ) {
 }
 
 class cf_user_api {
-	function cf_user_api() {
+	function __construct() {
 	}
 
 	function generate_key( $user_id ) {

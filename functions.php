@@ -7,7 +7,31 @@
  */
 require get_template_directory() . '/inc/wp-taxonomy-filter/taxonomy-filter.php';
 
-include('ui/functions.php');
+
+/**
+ * Load CF Gatekeeper.
+ *
+ * @see https://github.com/crowdfavorite/wp-gatekeeper
+ */
+function capsule_gatekeeper() {
+	$keep_out = apply_filters( 'capsule_gatekeeper_enabled', true );
+	if ( $keep_out ) {
+		require get_template_directory() . '/inc/cf-gatekeeper/cf-gatekeeper.php';
+		add_filter( 'cf_gatekeeper_capability', 'capsule_gatekeeper_capability' );
+	}
+}
+add_action( 'after_setup_theme', 'capsule_gatekeeper' );
+
+/**
+ * @param $capability
+ *
+ * @return string
+ */
+function capsule_gatekeeper_capability( $capability ) {
+	return 'read';
+}
+
+include( 'ui/functions.php' );
 
 $cap_client = new Capsule_Client;
 $cap_client->add_actions();
